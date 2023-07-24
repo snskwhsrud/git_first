@@ -1,1 +1,2 @@
-print('TEST')
+x = "hello word"
+print(x)
