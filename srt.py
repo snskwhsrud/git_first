@@ -1,6 +1,276 @@
-x = "hello word"
-x = "hello word"
-x = "hello word"
-r = "hello word"
-z = "hello word"
-print(x)
+--/*  */ 주석처리 
+DESC EMP;  데이터 검색기능 
+
+-- 조인 사용시 사용 
+--∪
+--∩
+
+--날짜 출력 방식
+SELECT SYSDATE FROM DUAL;
+
+SELECT EXTRACT(YEAR FROM HIREDATE) FROM EMP;
+
+SELECT TO_DATE('2020/01/01', 'YYYY/MM/DD') FROM DUAL;
+
+SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD') FROM DUAL;
+
+--함수 출력 방식 
+SELECT CIBCAT('HELLO','WORLD') 
+FROM DUAL;
+
+SELECT LENGTH('HELLO') FROM DUAL;
+
+SELECT LOWER('HELLO') FROM DUAL;
+
+SELECT UPPER('HELLO') FROM DUAL;
+
+SELECT SUBSTR('HELLO, WORLD',1,5) FROM DUAL;
+
+SELECT INSTR('HELLO,WORLD','0',1,2) FROM DUAL;
+
+SELECT REPLACE('HELLO WORLD', 'WORLD', 'world') FROM DUAL;
+
+SELECT TRIM(BOTH 'H' FROM 'HELLO WORLD HH') FROM DUAL;
+
+SELECT TRIM(LEADING '0' FROM 'HELLO WORLD HH') FROM DUAL;
+
+--형 변환 함수
+SELECT TO_CHAR(12345) FROM DUAL;
+
+SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD') FROM DUAL
+
+SELECT TO_NUMBER('12345') FROM DUAL;
+
+SELECT TO_TIMESTAMP('2023-08-30 오후 02:41:32', 'YYYY-MM-DD HH24:MI:SS') FROM DUAL;
+
+SELECT CAST(COIUMN AS DATATYPE(LENGTH)) FROM TAVLE 
+
+
+
+SELECT DISTINCT EMP.DEPTNO, DEPT.LOC
+FROM EMP, DEPT
+select ENAME, deptno
+from EMP
+order by ename;
+
+select *
+from emp
+where sal> 1000 and deptno = 20;
+
+select DEPTNO, JOB, AVG(sal)
+from emp
+group by deptno,job
+HAVING avg(sal) <= 3000
+ORDER by deptno
+
+--1번 문제 
+SELECT * 
+FROM EMP
+WHERE DEPTNO = 20 OR JOB = 'SALESMAN';
+
+--2번 문제 'MANAGER', 'SALESMAN', 'CLERK 들어가지 않은 사람을 출력
+SELECT * 
+FROM EMP
+WHERE JOB NOT IN ('MANAGER', 'SALESMAN', 'CLERK')
+
+SELECT * 
+FROM EMP
+WHERE JOB != 'MANAGER' and JOB != 'SALESMAN' and JOB != 'CLERK';
+
+--3번 문제  직업에 'A'가 들어간 사원 정보 출력  'N'도 출력함 
+SELECT * 
+FROM EMP
+WHERE JOB LIKE '%A%';
+
+SELECT * 
+FROM EMP
+WHERE JOB LIKE '%N%';
+
+--4번 문제 추가수당이 없는 사원 정보 출력 
+SELECT * 
+FROM EMP
+WHERE COMM IS NULL OR COMM = 0;
+
+--5번  문제 지역이 NEW YORK이고 직업이 SALESMAN 인 사원 정보 출력
+SELECT * 
+FROM EMP
+JOIN DEPT ON EMP.DEPTNO = DEPT.DEPTNO
+WHERE LOC = 'NEW YORK' AND JOB = 'CLERK' 
+--5번 답
+SELECT *  
+FROM EMP
+WHERE DEPT.LOC = 'NEW YORK' AND EMP.JOB = 'SALESMAN'
+
+--6번 문제 연간 총 수입이 30000 이상인 사원의 이름을 출력해보기  출력하면 안나오는 이유는. NULL이 있어서 출력이 안나옴 
+SELECT ENAME
+from emp
+where sal *12 + COMM >= 30000
+
+SELECT ENAME  하면 출력이 나옴 
+from emp
+where sal *12 + COMM >= 30000 OR SAL*12 >= 30000;
+
+--7번 문제 연간 총 수입 출력해줄 열을 생성해서 총 수입 TOTAL_SALARY출력 (SAL:월급)
+SELECT SAL*12+ NVL(COMM,0) AS TOTAL_SALARY
+FROM EMP
+      
+--8번 문제 사원 번호, 이름, 직급, 급여, 부서넘버 출력 ( 부서번호 20, 급여 2000이상, 부서번호30, 급여 2000이상) 
+SELECT EMPNO, ENAME, JOB,SAL,DEPTNO
+FROM EMP
+WHERE SAL >=2000 AND DEPTNO = 20 
+UNION
+SELECT EMPNO, ENAME, JOB,SAL,DEPTNO
+FROM EMP
+WHERE SAL >=2000 AND DEPTNO = 30 
+
+--9번 문제 위에랑 똑같은 문제인데 UNION ALL을 설명하기 위한 예제이다 중복된 행을 제거를 안한다 
+SELECT EMPNO, ENAME, JOB,SAL,DEPTNO
+FROM EMP
+WHERE SAL >=2000 AND DEPTNO = 20 
+UNION ALL
+SELECT EMPNO, ENAME, JOB,SAL,DEPTNO
+FROM EMP
+WHERE SAL >=2000 AND DEPTNO = 20 
+
+--10번 문제 결과 중 공통된 행만 반환한다 예제임 
+SELECT EMPNO, ENAME, JOB,SAL,DEPTNO
+FROM EMP
+WHERE DEPTNO = 30
+INTERSECT
+SELECT EMPNO, ENAME, JOB,SAL,DEPTNO
+FROM EMP
+WHERE JOB = 'SALESMAN'
+
+--11번 문제 사원 이름이 5글자 이상인 애들 출력
+SELECT *
+FROM EMP
+WHERE LENGTH(ENAME) >= 5
+
+--12번 문제 JOB을 3글자까지만 출력 
+SELECT SUBSTR(JOB, 1, 3)
+FROM EMP
+
+--13번 문제 A가 들어간 직업 %안쓰고 출력 
+SELECT INSTR(JOB , 'A', 1)
+FROM EMP
+
+SELECT *  이게 답 
+FROM EMP
+WHERE INSTR( JOB, 'A', 1 ) > 0;
+
+--14번 문제  직원들 입사 40주년이 언제인지 출력해보기 , 입사한지 42년차 되신 분들 출력 
+SELECT ADD_MONTHS(HIREDATE, 480) 40주년 언제인지 
+FROM EMP;
+
+SELECT *  42년차 
+FROM EMP
+WHERE EXTRACT(YEAR FROM HIREDATE) + 42 <= EXTRACT(YEAR FROM SYSDATE);
+
+SELECT *  보기 3 
+FROM EMP
+WHERE FLOOR(MONTHS_BETWEEN(SYSDATE, HIREDATE)) >= 42 * 12;
+
+--15번 문제 추가 수당 ( 해당사항 있음 해당사항없음 ) 
+SELECT ENAME, JOB, SAL, NVL2(COMM,'해당 사항 없음', '해당 사항 있음') AS COMM
+FROM EMP;
+
+--16번 문제 매니저의 급여합계
+SELECT SUM(SAL)
+FROM EMP
+WHERE JOB = 'MANAGER';
+
+--17번 문제 30번 부서 인원
+SELECT COUNT(*) 
+FROM EMP
+WHERE DEPTNO = '30';
+
+--18번 문제  제일 입사한지 오래된 인원 입사동기들 
+SELECT *
+FROM EMP
+WHERE EXTRACT(YEAR FROM HIREDATE) = (SELECT MIN(EXTRACT(YEAR FROM HIREDATE)) FROM EMP);
+
+--19번 문제 같은 직업이 3명 이상인 JOB을 출력 
+SELECT JOB, COUNT(*) 
+FROM EMP
+GROUP BY JOB
+HAVING COUNT(*) >= 3;
+
+--20번 문제 추가 수당 '해당 사항 없음', '추가 수당 없음', '추가 수당 xx'
+SELECT ENAME, JOB, SAL,
+       CASE
+           WHEN COMM IS NULL THEN '해당 사항 없음'
+           WHEN COMM = 0 THEN '추가 수당 없음'
+           ELSE '추가 수당 ' || TO_CHAR(COMM)
+       END AS ADD_ALL
+FROM EMP;
+--선생님 답 
+SELECT ENAME,COMM,
+       CASE
+           WHEN COMM IS NULL THEN '해당 사항 없음'
+           WHEN COMM = 0 THEN '추가 수당 없음'
+           ELSE CONCAT('추가 수당 : ',TO_CHAR(COMM))
+       END AS NEW_COMM
+FROM EMP;
+
+--21번 문제 EMP 테이블과 DEPT 테이블에서 공통으로 있는 부서번호 출력
+SELECT DEPTNO
+FROM EMP
+INTERSECT
+SELECT  DEPTNO
+FROM DEPT;
+
+-- SELECT 절 하나 사용하기 
+SELECT E.EMPNO, E.ENAME, D.DEPTNO, D.DNAME, D.LOC
+FROM EMP E, DEPT D
+WHERE E.DEPTNO = D.DEPTNO
+ORDER BY D.DEPTNO, E.EMPNO;
+
+SELECT E.EMPNO, E.ENAME, DEPT.DEPTNO, DEPT.DNAME, DEPT.LOC
+FROM EMP E
+JOIN DEPT ON E.DEPTNO = DEPT.DEPTNO
+ORDER BY DEPT.DEPTNO, E.EMPNO;
+
+--22번 문제 연도별 부서별 인원수
+SELECT TO_CHAR(HIREDATE, 'YYYY') AS HIRE_YEAR, DEPTNO, COUNT(*) AS CNT
+FROM EMP
+GROUP BY TO_CHAR(HIREDATE, 'YYYY'), DEPTNO;
+
+
+--23번 문제 각 부서별, 직업별, 그룹화된 부서 + 각 직업별, 전체 인원수, 급여 총액 (그룹화된 부서 : GROUP_DEPT, 그룹화된 직업 : GROUP_JOB)
+
+SELECT DECODE(GROUPING(DEPTNO), 1, 'GROUP_DEPT', DEPTNO) AS DEPTNO,
+        DECODE(GROUPING(JOB),1, 'GROUP_JOB', JOB) AS JOB,
+        COUNT(*), SUM(SAL)
+FROM EMP
+GROUP BY CUBE(DEPTNO, JOB)
+ORDER BY DEPTNO, JOB;
+
+-- EMP 테이블에서 자신의 상급자 이름을 더해서 출력 
+-- EMP 테이블 2개 합쳐보기, EMPNO, ENAME 
+SELECT*
+FROM EMP E1, EMP E2
+WHERE E1.MGR = E2.EMPNO;
+
+SELECT*
+FROM EMP E ,SALGRADE S 
+WHERE E.SAL >= S.LOSAL AND E.SAL <= S.HISAL;
+
+SELECT*
+FROM EMP E ,SALGRADE S
+WHERE E.SAL BETWEEN S.LOSAL AND S.HISAL;
+
+-- 조인 예시
+SELECT*  
+FROM EMP E1
+LEFT OUTER JOIN EMP E2 ON E1.MGR = E2.EMPNO;
+
+SELECT*
+FROM EMP E1
+RIGHT OUTER JOIN EMP E2 ON E1.MGR = E2.EMPNO;
+
+숙제
+각 직원의 이름과 부서 이름을 출력. (부서 번호 대신 부서 이름)
+각 직원의 이름과 해당 직원의 급여를 조회하되, 급여가 부서 평균 급여보다 높은 경우에는 "상위"라고 표시하고 그 외에는 "일반"이라고 출력
+각 부서별로 속한 직원의 수와 평균 급여를 조회하되, 급여가 해당 부서의 평균 급여보다 높은 직원의 이름과 급여를 함께 출력(평균 급여 내림차순으로 정렬)
+각 직원의 이름과 보너스를 조회하되, 보너스가 없는 직원들 중에서 가장 급여가 높은 직원의 이름과 급여를 출력
+
