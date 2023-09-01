@@ -18,3 +18,53 @@
 # <br> : break
 # <hr> : horizontal rule
 # &npsp : non breaking space
+# <p> : paragraph
+# <pre> : preformatted
+# alt : alterate
+
+# -<div> : division
+# div 태그는 블록 단위의 컨테이너 요소다. 즉 다른 요소들을 그룹화하느데 사용한다.
+# div 태그는 다른 요소들과 줄바꿈되어 나타난다. (블록 단위)
+
+# -<span> : span
+# span 태그는 인라인 단위의 컨테이너 요소다. 텍스트와 요소들의 스타일을 적용할 때 사용된다.
+# span 태그는 다른 요소들과 같은 줄에서 나타난다. (인라인 단위)
+
+# - 순서 있는 리스트(ordered list ) - <ol></0l> 
+# 1. a.
+# 2. b.
+# 3. c.
+# <ol>
+#     <li></li>
+#     <li></li>
+# <ol>    
+
+# - 순서 없는 리스트(unordered list) - <u1></u1> 
+# -, *, 
+
+# <ul>
+#     <ul><ul>
+#     <ul><ul>
+# <ul>
+
+# 정의 리스트(definition list) - <dl></dl>
+# 리스트 기호 없이 제목 아래에 텍스트가 있는 것과 같이 순서대로
+
+# <dl>
+#     <dl></dl>
+#     <dl></dl>
+    
+# <dl>    
+
+# - a href(anchor hyper reference)
+# 하이퍼링크를 생성하는데 사용된다.
+# 다른 웹페이지, 동일 페이지의 다른 부분, 파일, 이메일 주소 등을 연결할 수 있다.
+
+# href 속성은 링크 대상을 지정한다.
+# <a href = "URL">텍스트</a>
+
+# target : _blank (새창 새탭), _self(현재 창에서 열림)
+# _parent : 현재 프레임의 상위 프레임, _top :  
+# rel: 현재 문서와 링크된 문서사이의 관계를 정의한다.
+# <a href = "https://www.naver.com"> 사이트로 이동하기 </a> 
+
