@@ -128,9 +128,9 @@
 # CREATE 객체 (요소);
 
 # 2. ALTER : 이미 존재하는 데이터베이스 객체를 변경한다.
-# ALTER 객체 객체명 ADD COLUMN : 열 추가
-#       TABLE EMP  COLUMN 열이름 자료형 : 열 수정 
-#                   DROP COLUMN 열이름 : 열 삭제 
+# ALTER 객체 객체명 ADD COLUMN ; 열 추가
+#       TABLE EMP  COLUMN 열이름 자료형 ; 열 수정 
+#                   DROP COLUMN 열이름 ; 열 삭제 
 
 # 3. DROP : 데이터베이스 객체를 삭제한다.
 # DROP 객체 객체명;
@@ -158,7 +158,15 @@
 # 5. 트리거(Trigger) : 데이터베이스에서 발생하는 이벤트(작업)을 자동로 응답하여 실행되도록 설정한 작업 
 # 6. 함수(Function)
  
-
+# - 제약 조건
+# 1. Primary Key 기본키
+# 2. Foreign key 외래키
+# 3. Unique 고유 제약 조건 
+# Table EMP COLUMN 열이름 자료형 UNIQUE;
+# 4. 체크 제약 조건 
+# Table EMP COLUMN 열이름 자료형 CHECK(조건식);
+# 5. NOt NULL 제약 조건 
+# Table EMP COLUMN 열이름 자료형 NOT NULL; 
 
  
    
