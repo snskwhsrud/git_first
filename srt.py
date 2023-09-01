@@ -325,3 +325,6 @@ ORDER BY A.AVER_SAL DESC;
 
 
 각 직원의 이름과 보너스를 조회하되, 보너스가 없는 직원들 중에서 가장 급여가 높은 직원의 이름과 급여를 출력
+SELECT ENAME, SAL
+FROM EMP
+WHERE COMM IS NULL AND SAL = (SELECT MAX(SAL) FROM EMP WHERE COMM IS NULL )
