@@ -120,7 +120,34 @@
 # 각 세션이 서버의 메모리 또는 디스크 공간 등에서 리소스를 소비한다.
 # 따라서, 많은 수의 동시 접속자가 있는 경우 리소스 소비가 많아진다.
 
-데이터 정의어
+# 데이터 정의어(DDL, Data Definition Language)
+# 데이터베이스 구조를 정의하고 조작하는데 사용되는 SQL 문의 일부분이다.
+# DDL은 객체(테이블, 인덱스, 뷰)를 생성, 수정 및 삭제하는 작업을 수행한다.
+
+# 1.CREATE: 새로운 데이터베이스 객체를  생성한다.
+# CREATE 객체 (요소);
+
+# 2. ALTER : 이미 존재하는 데이터베이스 객체를 변경한다.
+# ALTER 객체 객체명 ADD COLUMN : 열 추가
+#       TABLE EMP  COLUMN 열이름 자료형 : 열 수정 
+#                   DROP COLUMN 열이름 : 열 삭제 
+
+# 3. DROP : 데이터베이스 객체를 삭제한다.
+# DROP 객체 객체명;
+
+# 4. COMMENT : 데이터베이스 객체에 대한 설명(주석)을 추가한다.
+# COMMENT ON 객체 객체명 IS '설명~~~'; 
+
+# 5. RENAME : 데이터베이스 객체의 이름을 변경한다.
+# RENAME 객체 객체명 T0 새로운 객체명 
+    
+# 6. TRUNCATE : 테이블에서 모든 행을 제거하여 초기 상태로 만든다.
+# TRUNCATE TABLE 테이블명;
+
+# 7. GRANT, REVOKE ; 사용자에게 권한을 부여하거나 회수한다. 
+# GRANT SELECT INSERT ON 객체명 TO 유저명 
+# REVOKE SELECT, INSERT ON 객체명 FROM 유저명
+
 
 
  
