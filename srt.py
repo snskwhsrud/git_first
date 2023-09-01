@@ -270,7 +270,58 @@ RIGHT OUTER JOIN EMP E2 ON E1.MGR = E2.EMPNO;
 
 숙제
 각 직원의 이름과 부서 이름을 출력. (부서 번호 대신 부서 이름)
-각 직원의 이름과 해당 직원의 급여를 조회하되, 급여가 부서 평균 급여보다 높은 경우에는 "상위"라고 표시하고 그 외에는 "일반"이라고 출력
-각 부서별로 속한 직원의 수와 평균 급여를 조회하되, 급여가 해당 부서의 평균 급여보다 높은 직원의 이름과 급여를 함께 출력(평균 급여 내림차순으로 정렬)
-각 직원의 이름과 보너스를 조회하되, 보너스가 없는 직원들 중에서 가장 급여가 높은 직원의 이름과 급여를 출력
+SELECT ENAME, DNAME
+FROM EMP , DEPT
+WHERE EMP.DEPTNO = DEPT.DEPTNO;
 
+WITH DEPT_DATA AS(SELECT DEPTNO, DNAME FROM DEPT)
+SELECT E.ENAME, D.DNAME
+FROM EMP E
+JOIN DEPT_DATA D ON E.DEPTNO = D.DEPTNO;
+
+각 직원의 이름과 해당 직원의 급여를 조회하되, 급여가 부서 평균 급여보다 높은 경우에는 "상위"라고 표시하고 그 외에는 "일반"이라고 출력
+SELECT E2.ENAME, E2.SAL,
+CASE
+WHEN E2.SAL > E2.SAL THEN '상위'
+ELSE '일반'
+END AS SAL_GRADE
+FROM EMP E2,(SELECT ROUND(AVG(SAL)) AS AVGSAL, DEPTNO FROM EMP 
+            GROUP BY DEPTNO) E1
+WHERE E2.DEPTNO = E1.DEPTNO;
+
+SELECT E.ENAME, E.SAL, 
+    CASE
+        WHEN E.SAL > (SELECT AVG(SAL) FROM EMP WHERE DEPTNO = E.DEPTNO) THEN '상위'
+        ELSE '일반'
+    END AS SAL_GRADE
+FROM EMP E;
+
+
+각 부서별로 속한 직원의 수와 평균 급여를 조회하되, 급여가 해당 부서의 평균 급여보다 높은 직원의 이름과 급여를 함께 출력(평균 급여 내림차순으로 정렬)
+1.SELECT E1.EMPNO, E1.ENAME, E1.SAL, E1.DEPTNO, COUNT(*), FLOOR(AVG(SAL)) AS AVG_SAL
+FROM EMP E1
+WHERE SAL >= (
+    SELECT AVG(SAL)
+    FROM EMP E2
+    WHERE E1.DEPTNO = E2.DEPTNO
+    GROUP BY E2.DEPTNO
+)
+GROUP BY E1.DEPTNO, E1.EMPNO, E1.ENAME, E1.SAL
+ORDER BY AVG_SAL DESC;
+
+
+SELECT E1.DEPTNO, COUNT(*), FLOOR(AVG(E1.SAL))
+FROM EMP E1
+GROUP BY E1.DEPTNO;
+
+WITH A AS(SELECT DEPTNO, COUNT(*) AS EMP_COUNT, ROUND(AVG(SAL)) AS AVER_SAL FROM EMP GROUP BY DEPTNO),
+     B AS (SELECT E1.ENAME, E1.SAL, E1.DEPTNO
+           FROM EMP E1, (SELECT ROUND(AVG(SAL)) AS AVG_SAL, DEPTNO FROM EMP GROUP BY DEPTNO) E2
+           WHERE E1.SAL > E2.AVG_SAL AND E1.DEPTNO = E2.DEPTNO)
+SELECT A.DEPTNO, A.EMP_COUNT, A.AVER_SAL, B.ENAME, B.SAL
+FROM A, B
+WHERE A.DEPTNO = B.DEPTNO
+ORDER BY A.AVER_SAL DESC;
+
+
+각 직원의 이름과 보너스를 조회하되, 보너스가 없는 직원들 중에서 가장 급여가 높은 직원의 이름과 급여를 출력
