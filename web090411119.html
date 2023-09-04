@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <from>
+      아름: <input type="text" value="" /><br />
+      암호: <input type="password" value="" maxlength="4" /><br />
+      자소서:<textarea cols="20" rows="5">
+              이곳에 자기소개서 작성
+          </textarea
+      >
+    </from>
+    <form>
+      나라 : <input type="text" list="countries" /><br />
+      <datalist id="countries">
+        <option value="가나"></option>
+        <option value="스위스"></option>
+        <option value="브라질"></option>
+      </datalist>
+
+      보고싶은것 : <input type="text" list="what" /><br />
+      <datalist id="what">
+        <option value="산"></option>
+        <option value="바다"></option>
+        <option value="도시"></option>
+      </datalist>
+    </form>
+  </body>
+</html>
