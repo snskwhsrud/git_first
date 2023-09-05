@@ -90,48 +90,25 @@ ID 선택자는 클래스 선택자보다 우선순위가 높다 클래스 선�
 선택자보다 우선순위가 높다 ID > Class > Tag Name
 
 <!---->
-4. 자손 및 자식 관계 (CSS COmbinators) 여러 개의 요소 중 특정 관계 있는 하위요소나 자식 요소만을 선택한다
-
-1. 자손 (combinator: 공백) : 조상과 후손 사이의 모든 하위 요소들을 대상으로 한다 
-2. 자식(combinator: >) 직접적인 자식 요소들을 대상으로 한다 
-
-div ul li{
-    color : red;
-}
-div 안에 있는 ul 안에 있는 li에 적용한다 
-
-div > ul > li{
-    color: red;
-}
-div 바로 아래 있는 ul 바로 아래 있는 li에 적용한다
+4. 자손 및 자식 관계 (CSS COmbinators) 여러 개의 요소 중 특정 관계 있는
+하위요소나 자식 요소만을 선택한다 1. 자손 (combinator: 공백) : 조상과 후손
+사이의 모든 하위 요소들을 대상으로 한다 2. 자식(combinator: >) 직접적인 자식
+요소들을 대상으로 한다 div ul li{ color : red; } div 안에 있는 ul 안에 있는 li에
+적용한다 div > ul > li{ color: red; } div 바로 아래 있는 ul 바로 아래 있는 li에
+적용한다
 
 <!---->
 
-5. 가상 클래스(pseudo-class): 특정 상태나 위치 등 특별한 조건을 가진 요소를 선택하기 위해 사용된다
-a:hover{
-    color:red;
-}
-a 링크 위에 마우스가 올라가면
-
-ul li: first-child{
-    font-weight:bold;
-}
-li 첫번째 아이템만 굵게
-
-ul li:nth-child(odd){
-    background-color:#f54f23;
-}
+5. 가상 클래스(pseudo-class): 특정 상태나 위치 등 특별한 조건을 가진 요소를
+선택하기 위해 사용된다 a:hover{ color:red; } a 링크 위에 마우스가 올라가면 ul
+li: first-child{ font-weight:bold; } li 첫번째 아이템만 굵게 ul
+li:nth-child(odd){ background-color:#f54f23; }
 
 <!---->
-리스트 홀수 번쨰 아이템만 배경색 설정 
-
-6. 전체 선택자(Universal Selector): 모든 HTML 요소를 선택, 기호는 * 
-*{
-    margin :0;
-
-}
-
-7. 속성 선택자(Attribute Selector) : 특정 속성 값을 가진 HTML 요소를 선택, 기호는 대괄호[]
-<input [type="submit"] {
-    color :white;
-}
+리스트 홀수 번쨰 아이템만 배경색 설정 6. 전체 선택자(Universal Selector): 모든
+HTML 요소를 선택, 기호는 * *{ margin :0; } 7. 속성 선택자(Attribute Selector) :
+특정 속성 값을 가진 HTML 요소를 선택, 기호는 대괄호[]
+<input [type="submit" ] { color :white; } <!---- />
+- 색상 1. 이름을 사용한 색상 지정(140개) 2. 16진수 코드를 이용한 색상 지정 #
+뒤에 16진수쌍 3개로 이루어진다 10진번 : 0 1 2 3 4 5 6 7 8 9 2 진법 : 0 1 16 진법
+: 0 1 2 3 4 5 6 7 8 9 A B C D E F
