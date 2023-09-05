@@ -32,3 +32,106 @@ Htnl5에서 사용하는 시맨틱 태그들은 의미를 가지고 역할과 �
 <!---->
 select & 콤보박스 사용자가 선택할 수 있는 항목을 제거하고, 그 범위내에서만
 선택이 가능하다
+
+<!---->
+상속 특정 속성 값이 부모로부터 자식에게 전달되는 것
+
+<div style="color: red">
+  <p>텍스트</p>
+</div>
+부모 : div, 자식 : p p 텍스트는 빨간색으로 출력이 된다
+
+<div style="clicr: red">
+  <p style="color: blue">텍스트</p>
+</div>
+p 텍스트는 파란색으로 출력이 된다. 모든 Css 속성이 상속되는 것은 아니다
+
+<div style="color: red; font-size: 24px">
+  <p style="color: blue">텍스트</p>
+</div>
+부모 요소에서 전달받고 난 후 자신의 스타일을 적용한다
+
+<p style="border: 1px solid black">텍스트</p>
+<div style="border: 1px solid black">
+  <p style="border: inherit">텍스트</p>
+</div>
+<!---->
+border-width, border-style, border-color inherit: 부모 요소로부터 값을
+상속받는다.
+<!---->
+모든 CSS 속성이 상속되는 것은 아니다 border, padding, margin 과 같은 박스 모델
+속성은 상속되지 않는다.
+
+<!---->
+선택자 HTML 요소를 식별하여 스타일 규칙을 적용하는데 사용되는 패턴, 표현
+셀렉터를 사용해서 특정 요소나 그룹을 선택하고, 해당 요소에 스타일을 적용할 수
+있다
+
+<!---->
+1. 태그 이름(Tag Selector) : HTML 태그 이름을 셀렉터로 선택하여 사용한다. p{
+color:red; } 2. ID 선택자(ID Selector): HTML 지정된 고유한 ID 속성 값을 기반으로
+선택하여 사용한다. ID 이름은 해시(#)으로 시작한다. ID는 고유한 속성이므로
+기보키와 같이 하나만 존재하여야 한다
+<p id="sample">id를 사용해보는 예제다</p>
+#sample { color:red; }
+
+<!---->
+3. 클래스 선택자 (Class Selector) : HTML에 지정된 클래스 속성 값을 기반으로
+선택하여 사용한다 클래스 이름은 마침표(.)으로 시작한다 여러 개의 클래스를 한번에
+지정할 경우 공백으로 구분한다
+
+<p class="example">id를 사용해보는 예제다</p>
+.example { color:red; } .example .example2 .example3{ color:red; }
+태그이름.클래스이름의 형태로도 선언이 가능하다 p.example { color:red; } 클래스
+이름은 여러개가 될 수 있다 서로 다른 태그여도 같은 이름을 사용할 수 있다 클래스
+이름을 가진 특정 태그에만 선택하여 사용하고 싶을때
+<!---->
+ID 선택자는 클래스 선택자보다 우선순위가 높다 클래스 선택자는 태그 이름
+선택자보다 우선순위가 높다 ID > Class > Tag Name
+
+<!---->
+4. 자손 및 자식 관계 (CSS COmbinators) 여러 개의 요소 중 특정 관계 있는 하위요소나 자식 요소만을 선택한다
+
+1. 자손 (combinator: 공백) : 조상과 후손 사이의 모든 하위 요소들을 대상으로 한다 
+2. 자식(combinator: >) 직접적인 자식 요소들을 대상으로 한다 
+
+div ul li{
+    color : red;
+}
+div 안에 있는 ul 안에 있는 li에 적용한다 
+
+div > ul > li{
+    color: red;
+}
+div 바로 아래 있는 ul 바로 아래 있는 li에 적용한다
+
+<!---->
+
+5. 가상 클래스(pseudo-class): 특정 상태나 위치 등 특별한 조건을 가진 요소를 선택하기 위해 사용된다
+a:hover{
+    color:red;
+}
+a 링크 위에 마우스가 올라가면
+
+ul li: first-child{
+    font-weight:bold;
+}
+li 첫번째 아이템만 굵게
+
+ul li:nth-child(odd){
+    background-color:#f54f23;
+}
+
+<!---->
+리스트 홀수 번쨰 아이템만 배경색 설정 
+
+6. 전체 선택자(Universal Selector): 모든 HTML 요소를 선택, 기호는 * 
+*{
+    margin :0;
+
+}
+
+7. 속성 선택자(Attribute Selector) : 특정 속성 값을 가진 HTML 요소를 선택, 기호는 대괄호[]
+<input [type="submit"] {
+    color :white;
+}
