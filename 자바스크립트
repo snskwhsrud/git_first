@@ -5,3 +5,38 @@
 4. 이벤트 기반 프로그래밍 : 이벤트 기반(Event-driven) 모델을 따른다 이벤트 발생 시 해당 이벤트 대한 처리기(Event Handler) 함수를 사용
 5. API와 상호작용: 외부 리소스와 서비스에 접근하여 사용가능하다
 6. 다른 플랫폼에서 활용: Node.js Dart 등에서 자바스크립트를 활용하여 사용할 수 있다 
+
+-var, let : 변수 키워드
+
+1. 범위(scope): var로 선언된 변수는 함수 범위(function scope), let로 선언된 변수는 블록 범위(block scope)
+
+functionexam(){
+    var x = 10;
+    let y = 20;
+
+    if(true){
+        var x = 30; // 기존 전역변수 10을 수정
+        let y = 40; // 블록 지역변수 y를 선언 
+
+        console.log(x); //30
+        console.log(y); // 40
+    }
+    console.log(x);
+    console.log(y);
+}
+
+2. 호이스팅(HOisting) : 코드 실행 전에 변수가 선언되었다고 처리되어, 실제 변수 할당 이전에도 사용할  수 있다
+var 호이스티 발생, let 호이스팅 발생 x
+
+console.log(x); //Undefined 
+console.log(y); // y가 없다
+
+var x = 10;
+let y = 20;
+
+console.log(x);
+console.log(y);
+
+3. 재선언 (Re-declaration) : var로 동일한 변수를 여러번 선언해도 에러가 발생하지 않고 재할당된다.
+
+4. 전역 객체(Global object) : 객체 단계에서 전역범위에서 생성된 var 전역변수로 해석이되고, let, const, class 등 전역변수  프로퍼티로 해석되지 않는다
