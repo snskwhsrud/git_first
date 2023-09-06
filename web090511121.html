@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flexbox and Grid Example</title>
+    <style>
+      body {
+        background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdMu9P3s3cdJSk40ySeFy4IXjySvhMbpWMew&usqp=CAU");
+        background-repeat: no-repeat;
+      }
+
+      .menu-item {
+        width: 200px;
+        height: 250px;
+        background-color: lightgray;
+        margin: 10px;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+      }
+
+      .grid-container {
+        display: grid;
+        justify-content: center;
+        grid-template-columns: repeat(3, minmax(200px, auto));
+        grid-gap: 20px;
+      }
+
+      .box {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .bold {
+        font-weight: bold;
+      }
+
+      .italic {
+        font-style: italic;
+      }
+
+      .burger img {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="menu-item steak-text bold">
+        <h3>스테이크</h3>
+        <p>완벽하게 조리된 스테이크</p>
+      </div>
+      <div class="menu-item pasta-text italic">
+        <h3>파스타</h3>
+        <p>선택할 수 있는 소스와 함께 신선한 파스타</p>
+      </div>
+      <div class="menu-item sushi-text">
+        <h3>초밥</h3>
+        <p>다양한 초밥 롤과 사시미</p>
+      </div>
+      <div class="menu-item burger">
+        <h3>버거</h3>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBwI-1D1-K2UGYZxo7ZSNjurkeIlrv5_Ia8g&usqp=CAU"
+          alt="Burger Image"
+        />
+      </div>
+    </div>
+
+    <h2>Grid Layout Example</h2>
+    <div class="grid-container">
+      <div class="menu-item steak-text bold">
+        <h3>스테이크</h3>
+        <p>완벽하게 조리된 스테이크</p>
+      </div>
+      <div class="menu-item pasta-text italic">
+        <h3>파스타</h3>
+        <p>선택할 수 있는 소스와 함께 신선한 파스타</p>
+      </div>
+      <div class="menu-item sushi-text">
+        <h3>초밥</h3>
+        <p>다양한 초밥 롤과 사시미</p>
+      </div>
+      <div class="menu-item burger">
+        <h3>버거</h3>
+        <a href="#">모든 재료가 들어간 맛있는 버거입니다</a>
+      </div>
+    </div>
+  </body>
+</html>
