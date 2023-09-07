@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문자열 압축하기</title>
+  </head>
+  <body>
+    <script>
+      document.write("<p>" + result + "<P>");
+      var str = prompt("문자열을 입력하세요");
+      var result = "";
+      var count = 1;
+      var currebtCher = str[0];
+
+      for (var i = 1; i < str.length; i++) {
+        if (str[i] == currebtCher) {
+          count++;
+        } else {
+          result += currebtCher + String(count);
+          currebtCher = str[i];
+          count = 1;
+        }
+      }
+      document.write("<p>" + result + "<P>");
+    </script>
+  </body>
+</html>
