@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>지도 만들기</title>
+    <style>
+      #map {
+        height: 800px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>My google Maps</h3>
+
+    <div id="map"></div>
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf2zNmmrKN_m7F38zcoukcynHVjJj9Azc&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+
+    <script type="text/javascript">
+      function initMap() {
+        const curLoc = { lat: 19.8063727, lng: 167.3688322 };
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 5,
+          center: curLoc,
+        });
+      }
+    </script>
+  </body>
+</html>
