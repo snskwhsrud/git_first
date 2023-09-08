@@ -1,46 +1,48 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>타이머를 가진 워커 태스크 만들기</title>
+    <title>타이머를 가진 웹 워커 만들기</title>
   </head>
   <body>
-    <h2>타이머를 가진 워커 태스크 만들기</h2>
-    <h3>타이머 카운트</h3>
+    <h3>타이머를 가진 웹 워커 만들기</h3>
     <hr />
-    <div><span id="timer"></span></div>
-    <button id="start" onclick="startTimer()">Start</button>
-    <button id="stop" onclick="stopTimer()">Stop</button>
-
+    <div><span id="timer">타이머카운트</span></div>
+    <button id="start" onclick="start()">start</button>
+    <button id="stop" onclick="stop()">stop</button>
     <script>
-      var worker = new Worker("add.js");
-      var count = 1;
-      var intervalID = null;
+      var addWorker = new Worker("timer.js"); // 워커 태스크 생성
 
-      function startTimer() {
-        if (intervalID !== null) return;
-        intervalID = setInterval(myCallback, 1000);
-      }
-
-      function stopTimer() {
-        if (intervalID === null) return;
-        clearInterval(intervalID);
-        intervalID = null;
-      }
-
-      function myCallback() {
-        postMessage(count);
-        count++;
-      }
-
-      worker.onmessage = function (e) {
-        console.log("Received message from worker: " + e.data);
+      addWorker.onmessage = function (e) {
+        document.getElementById("timer").innerHTML = e.data;
       };
 
-      function sendMessageToWorker(parameters) {
-        worker.postMessage(parameters);
+      function start() {
+        addWorker.postMessage("start");
       }
 
-      console.log("setTimeout() example...");
+      function stop() {
+        addWorker.postMessage("stop");
+      }
+      var count = 1;
+      var intervalID = null; // 타이머 ID
+
+      onmessage = function (e) {
+        // 브라우저로부터 메시지 수신
+        if (e.data == "start") {
+          if (intervalID != null) return; // 타이머 작동중이면 리턴
+          intervalID = setInterval(myCallback, 1000); // 1초 간격 myCallback() 호출
+        } else if (e.data == "stop") {
+          if (intervalID == null) return; // 타이머 작동하지 않으면 리턴
+          clearInterval(intervalID);
+          close(); // 워커 태스크 종료. 더 이상 메시지 받지 않음
+        }
+      };
+
+      function myCallback() {
+        // 1초 간격으로 호출
+        postMessage(count); // 카운트 값을 브라우저로 전송
+        count++; // 카운트 값 증가
+      }
     </script>
   </body>
 </html>
