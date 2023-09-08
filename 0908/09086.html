@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>타이머를 가진 워커 태스크 만들기</title>
+  </head>
+  <body>
+    <h2>타이머를 가진 워커 태스크 만들기</h2>
+    <h3>타이머 카운트</h3>
+    <hr />
+    <div><span id="timer"></span></div>
+    <button id="start" onclick="startTimer()">Start</button>
+    <button id="stop" onclick="stopTimer()">Stop</button>
+
+    <script>
+      var worker = new Worker("add.js");
+      var count = 1;
+      var intervalID = null;
+
+      function startTimer() {
+        if (intervalID !== null) return;
+        intervalID = setInterval(myCallback, 1000);
+      }
+
+      function stopTimer() {
+        if (intervalID === null) return;
+        clearInterval(intervalID);
+        intervalID = null;
+      }
+
+      function myCallback() {
+        postMessage(count);
+        count++;
+      }
+
+      worker.onmessage = function (e) {
+        console.log("Received message from worker: " + e.data);
+      };
+
+      function sendMessageToWorker(parameters) {
+        worker.postMessage(parameters);
+      }
+
+      console.log("setTimeout() example...");
+    </script>
+  </body>
+</html>

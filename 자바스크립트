@@ -246,3 +246,23 @@ in div clicked */
 웹 스토리지는 쿠키보다 용량 제한이 크고, API 간단하고 보안도 우수하다 
 로그인 정보, 사용자 설정 
 
+- 웹 워커 (web Worker) : 브라우저의 메인 쓰레드와 별도로 백그라운드에서 실행되는 스크립트
+오래 걸리는 작업을 백그라운드에서 처리해서 메인쓰레드가 멈추거나 지연되지 않도록 
+
+1. 백그라운드 실행 : 메인 스크립트와 별개로 백그라운드에서 실행된다 오래 걸리는 작업이 UI 업데이트를 차단하거나 반응을 저하시키지 않도록 
+2. 멀티스레딩  : 자바스크립트는 기본적으로 싱글 스레드 언어다 즉 한번에 하나씩 처리하는 언어 그러나 웹 워커를 사용하여 별도의 스레드에서 코드를 실행하여
+동시에 여러 작업을 할  수 있다.
+3. 메시지 기반 통신  : 메인 스크립트와 웹 워커 사이의 데이터 교환은 PostMessage API와 onmessage 이벤트 핸들러를 사용한다 
+4. 제한된 기능  : DOM에 직접 접근할 수 없으며, 로컬 파일 시스템에도 접근할 수 없다 (window, document)
+
+var Worker = new Worker('worker.js');
+
+worker.onmessage = function(event){
+    console.log(event.data);
+};
+
+self.onmessage = function(event){
+    console.log(event.data);
+    self.PostMessage("안녕하세요 저는 다른 쓰레드입니다")
+}
+
