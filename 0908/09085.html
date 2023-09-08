@@ -26,6 +26,10 @@
           zoom: 5,
           center: curLoc,
         });
+        const marker = new google.maps.marker({
+          position: curLoc,
+          map: map,
+        });
       }
     </script>
   </body>
