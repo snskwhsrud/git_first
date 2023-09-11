@@ -248,3 +248,146 @@ const func1 = () => {
 { } 없이도 함수 선언 가능, this 키워드 없이 주변 스코프에서 this 값을 상속받는다 화살표 함수 내부에서 다른 화살표 함수를 작성할 수 있다 
 
 클래스형 컴포넌트를 사용해서 증가, 감소하는 카운트 만들기 
+
+- 조건부 랜더링 : JSX 내에서  Javascript 표현식을 사용하여 조건부 로직을 작성할 수 있다 
+
+1) if /else 
+fuction Example({number}) {
+    if(number > 10) {
+        return <div>10보다 큰 값 <.div>;
+    }else {
+        reaact <div> 10 보다 작은 값 </div>;
+    }
+
+    switch(number) { 
+        case 1 : 
+        return <div>1</div>;
+        case 2 :
+        return <div> 2 </div>;
+        case 3 :
+        return <div> 다른 값</div>;
+    }
+}
+
+2) 삼항연산자 
+fuction Example({number}) {
+    fuction Example({number}) {
+        return(
+            <div>{number>10 ? '10보다 큰 값' : '10보다 작은 값 '}</div>  
+        );
+    }
+3. &&연산자를 활용한 랜더링 
+fuction Example({message}) {
+    return(
+        <div>
+        {message.length > 0 && <h2>Hell0, {message} </h2>}
+        </div>
+    );
+}
+
+- 리스트와 key 
+const number = [1,2,3,4,5,6];
+여러 개의 동일한 형태의 컴포넌트를 랜더링해야할 떄, 배열의 각 요소에 대해 하나씩 컴포넌트를 생성하고 싶을 때,
+이런 경우 map 메소드를 사용하여 각 요소별로 컴포넌트를 하나씩 생성한다. 단, 고유한 key값을 부여해야한다 
+
+const list = number.map((number) =>
+    <li>{number}</li>
+);
+
+const list = number.map((number) =>
+    <li key ={key.toString()}>{number}</li>
+);
+키 값이 중복될 수 있다 보통 데이터 ID를 key 사용하는데 최후의 수단으로 인덱스 번호를 사용하기도 한다 
+배열의 순서가 바뀔 경우 key의 업데이트를 해야되기 때문에 비효율적이다 최대한 인덱스 번호를 키 값으로 쓰는 것은 피하자 
+key 값은 전역적으로 고유할 필요는 없다 형제 사이에서만 고유하면 된다
+
+- 폼 처리 : 폼 요소의 상태를 관리하고 사용자 입력에 따라 반응하는 방법 
+일반적으로 onChange 이벤트 핸들러 통해 사용자의 입력을 상태에 연결한다 onSubit 이벤트 핸들러를 통해 폼 제출 시 실행할 작업을 정의한다
+일반적으로 폼 처리는 이벤트 핸들러랑 상태로 한다
+
+1)클래스 컴포넌트에서 폼 처리 
+class NameForm extends COmponent {
+    constrructor (props) {
+        super(props);
+        this.state = {value : ''}
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({value : event.target.value}); // event.target.value는 이벤트가 발생한 요소(target)인 입력 필드를 사용
+    }
+
+    handleSubmit(event) {
+        alert('A name submit: ' + this.state.value);
+        event.preventDefaulr(); // 기본동작을 취소하는 역활 
+        // 폼을 제출하면 기본적으로 페이지가 다시 로드 or 새로고침 
+    }
+
+    render(){
+        return(
+            <form onSubmit={this.handleSubmit}>
+            <label>Name:
+                <input type = "text" value={this.state.value} onChange={this.handleChange}/>
+            </label>
+            <input type="submit" value="submit"/>
+        </form>
+        )
+    }
+}
+
+2) 함수형 컴포넌트에서의  폼 처리: Hooks
+useState Hook, onChange, onSubit
+
+import React, {useState} from  'react';
+
+fuction NameForm(){
+    const [value, setValue] = useState('');
+
+    const handleChange = (event) => setValue(Ecent.target.value) ;
+
+    const handleSubmit = (event) => {
+        alert('A name submit: ' + value);
+        event.preventDefaulr();
+    };
+
+    return (
+        <form onSubmit = {handleSubmit}>
+        <label>Name:
+        <input type="text" value={value} onChange={handleChange} />
+        </label>
+        <input type-'submit' value='submit'/>
+        </form>
+    );
+}
+
+자바스크립트 모듈 시스템에서 export와 import는 모듈 간에 기능을 공유하기 위해 사용되는 키워드다
+
+-export : 현재 모듈에서 정의된 함수, 객체, 값 등을 다른 자바스크립트 파일에서 사용할 수 있도록 공개합나디
+
+- import : 다른 자바스크립트 파일에서 export된 기능을 가져오기 위해 사용한다 
+
+- export default : 모듈당 하나만 가능한 기본 내보내기, default로 내보낸 값은 {} 없이 import할 수 있다
+
+- 아이템 추가 : 아이템을 추가하기 위해서는 기존 배열을 변경하는 것이 아니라, 새로운 배열 생성하고, 이를 state로 관리해야한다
+
+const [item, setItems] = useState (['Apple', 'banana' , 'kiwi']);
+
+const addItem = () => {
+    const newItem = prompt('Enter a new item:');
+    if(newItem){
+        setItems([...items, mewItem]);
+    }
+};
+
+const removeItem = (index) => {
+    const updateItem = items.filter((_,i) => i !== index);
+    setItems(updateItem);
+};
+
+1. 사용자 로그인의 상태에 따라 다른 메시지를 보여주는 컴포넌트를 작성하세요 로그인이 되어 있다면 환영합니다 00님 아니면 로그인해주세요
+2. 배열에 있는 데이터로 리스트 아이템을 생성하는 컴포넌트를 작성하세요 [{id: 1, text:"hello"}, {id:2, text:"byebye"}]
+3. 아까 만든 로또 6개 중복없이 만들기 
+
+
