@@ -206,4 +206,45 @@ class EXample extends React.component {
     }
 }
 
+함수형 컴포넌트에서 이벤트 처리 : 함수형 컴포넌트에서는 보통 화살표 함수로 이벤트 핸들러를 정의한다 
+import React, {useState} from 'reaact';
 
+function Example(){
+    const[count, setCount] = useState(0);
+
+    const handleclick = () => setCount(count+1);
+
+    return ( 
+        <button onclikc -{ handleclick}>
+        {count} 번
+        </button> 
+    )
+}
+
+화살표 함수(arrow function) : Es6에 도입된 선언 방식 
+
+매개변수 없는 함수 
+
+count func1 => () {
+    함수내용
+};
+
+const func1 = param => {
+    함수내용
+};
+
+const func1 = (param1, param2,) => {
+    함수 내용
+};
+
+반환값이 있는 경우
+const func1 = () => expression;
+
+const func1 = () => {
+    함수내용
+    return expression;
+}
+
+{ } 없이도 함수 선언 가능, this 키워드 없이 주변 스코프에서 this 값을 상속받는다 화살표 함수 내부에서 다른 화살표 함수를 작성할 수 있다 
+
+클래스형 컴포넌트를 사용해서 증가, 감소하는 카운트 만들기 
