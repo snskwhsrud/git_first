@@ -10,5 +10,224 @@ function App() {
         <>
         <Route path="/post/:id" component={Post}/>
         </>
+    );
+}
+
+2) 파라미터 추출 : useParams 훅을 사용하여 동적 매개변수 값을 추출한다
+
+import {useParams} from 'react-router-dom';
+
+function Post() {
+    const {id} = useParams;
+
+    return <div>ID : {id}</div>;
+}
+
+export default Post;
+
+
+<Route path="/" element={<Home/>}/>
+    <Route path "/post" element={<Post/>}/>
+    <Route Path "/chat" element={<chat/>}/>
+</Route>
+
+/post/chat -> /post/:id
+useParams() 사용가능하다 
+
+Outlet은 React Router v6에서 도입되었다 중첩된 라우팅(Nested Routing) 시 부모 컴포넌트를 랜더링할 때 사용된다 
+Outlet를 통해 중첩된 경로의 컴포넌트를 표시한다 
+
+index : 경로 아래에 있는 절대 경로(/)는 유효허자 않다  중첩된 라우팅에서 상위 경로의 절대 경로를 설정하기 위해 사용한다
+
+- URL 쿼리 매개변수 
+URL에 추가 정보를 전달하기 위해 사용되는 매개변수다 
+일반적으로 ?문자로 시작되고 key=value 형식으로 구성된다 여러 개의 쿼리 매개변수가 있을 경우 & 문자로 구분된다 
+예를 들어, /seacrh?query=keyword&filter=recent : keyword 검색해서, 최신 순으로 보여줘 
+
+1) react- router-dom 패키지에서 useLocation() 훅을 사용하여 URL 정보를 가져온다
+2)URL 에서 쿼리 정보만 추출한다
+3) 추출한 값으로 연산을 실행한다
+
+impoer {useLocation} from 'react-royter-dom';
+
+function Example() {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+
+    const keyword = searchParams.get('query');
+    const filter = searchParams.get('filter');
+}
+
+- Programmatic Navigation(프로그래밍 방식으로 페이지 전환)
+JavaScript 코드 내에서 페이지 전환
+해당 기능은 로그인 이후 리디렉션, 양식 제출 후 결과 페이지 표시 같은 상황에서 유용하다 
+A.com -> B.com 
+
+1) useHistory() : 현재 URL 이력을 관리하는 객체 
+2) useNavigate() : 변경 및 페이지 전환에 사용되는 함수  
+3) <Link>
+
+impoer {useHistory,Link} from 'react-router-dom';
+
+fucntion Example() {
+    const history = useHistory();
+
+    const handleClik = () => {
+        history.ppush('/other');
+    };
+
+    const handleclick2 = () => {
+        navigate('/newPage');
+    };
+
+    return(
+        <>
+            <Link to="/another"> 다른 페이지 </Link>
+            <button onClick={handleclick}> 다른 경로</button>
+            <button onClick={handleclick2}> 새로운 페이지 </button>
+        </>
+    );
+}
+
+- 리디렉션(Redirect)
+사용자를 현재 페이지에서 다른 경로로 자동으로 이동시키는 기능 (react-router-dom)
+
+impoer {Redirect} from 'react-router-dom';
+
+function Example() {
+    const logIN = useState(false);
+
+    if(logIN) {
+        return <Redirect to='/home'/>
+    } else {
+        return <Redirect to='/login'/>
+    }
+}
+
+- 보호 (Guards)
+컴포넌트와 함께 보호 기능을 구현할 수 있다 인증된 사용자만 접근한다 조건부 랜더링 
+
+impoer {Route, Redirect} from 'react-router-dom';
+
+function PrivateRoute({component: component, logIN,...lst}) {
+    return (
+        <Route
+        {...lst}
+        render={(i) => {
+            logIN ? (
+            <component {...i}/>
+     ) : (
+        <Redirect to="/login"/>
+     )
+        }}
     )
 }
+
+- 지연 로딩 (Lazy Loading) : 초기 어플리케이션 로딩 속도 개선 
+React.lazy()와 Suspense 컴포넌트를 사용하여 지연 로딩을 구현한다 
+로딩 속도 개선이나, 컴포넌트를 필요한 시점에 로드되게 할 수 있다 
+
+React.lazy() : 동적으로 로드할 컴포넌트를 지정하기 위해서 사용
+코드 스플리팅(code splitting), 해당 컴포넌트가 실제로 사용될 때까지 해당 모듈을 로드하지 않는다 
+Suspense 컴포넌트 : 지연된 컴포넌트가 로드되기 전까지 대체 콘텐츠를 표시하는 역할을 한다 
+
+impoer React, {lazy, Suspense } from 'react';
+
+const lazyComponent = lazy(() => impoer('./lazyPage'));
+
+function App() {
+    return (
+        <>
+            <Suspense fallback={<p>Loading...<p>}>
+            <lazyComponent/>
+            <.Suspense>
+            </>
+    );
+}
+
+- 404 에러 처리 (404 Error Handling) : 잘못된 경로로 접근시 404 에러 페이지를 처리하는 방법 
+
+1) <Switch> 컴포넌트와 <Route> 컴포넌트를 활용한 방법
+모든 경로에 대한 <Route> 미리 정의하고, 마지막에 404 에러 페이지를 추가한다 
+<Route path="*"/> 이러한 방식으로 처리한다 (가장 일반적이고 간단한 방법이다 )
+
+impoer {Switch,Route} from 'react-router-dom';
+
+fucntion App() {
+    return (
+        <>
+            <Switch>
+                <Route path="/" component={HOme}/>
+                <Route path="/chat" component={chat}/>
+                <Route path="/product" component={product}/>
+            ...
+                <Route component={NotFound}/>
+            </Switch>
+        </>
+    )
+}
+
+exact - 중복된 경로가 있을 경유 하나로 처리하기 위함 
+
+2. useLocation() 훅과 조건부 랜더링 
+
+import {useLocation} from 'react-router-dom';
+
+function App(){
+    return (
+        <>
+            {location.pathname !== '/' && <NotFound />}
+        </>
+    );
+}
+
+- 서버 사이드 랜더링 (Server-side Rendering, SSR)
+클라이언트와 서버 간의 일관성 있는 라우팅 구현
+초기 로딩 속도 개선, 검색 엔진 최적화(SEO) 위해 사용된다.
+
+1) 서버 측 라우팅 설정 : StaticRouter 컴포넌트 
+impoer {StaticRouter} from 'react-router-dom';
+
+const data = {};
+
+const app = (
+    <StaticRouterlocation={req.url} context={data}>
+        <App/>
+        </StaticRouter>
+);
+
+2) 클라이언트 측 설정 : BrowserRouter 컴포넌트
+impoer {BrowserRouter} from 'react-router-dom';
+
+ReactDom.hydeate(
+    <BrowserRouter>
+        <App/>
+    </BrowserRouter>
+    document.gerbyElementbyId('root')
+);
+
+3. <Route> 및 <Link> 사용 
+
+- 히스토리 관리(History Management) : React에서 히스토리를 제어하고 관리하는 기능 
+1) CreateBrowserHistory : 히스토리 객체를 생성, 실제 URL을 변경, 주소창에 직접 경로를 나타낸다.
+impoer {CreateBrowserHistory} from 'history';
+
+const history = CreateBrowserHistory();
+
+history.push('/chat');
+
+2) createMemoryHistory : 브라우저 주소창과 상관없이 URL을 관리한다 (SSR)
+impoer {createMemoryHistory} from 'history';
+
+const history = createMemoryHistory();
+
+history.push('/chat');
+
+3) creatHashistory : 주소항에 해시값(#) 경로가 나타난다 
+impoer {createMemoryHistory} from 'history';
+
+const history = createMemoryHistory();
+
+history.push('/chat');
+
+history : push, replace, go(n), goBack(), goForward()
