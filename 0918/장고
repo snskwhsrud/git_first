@@ -147,3 +147,73 @@ SSL/TLS 연결 시 서버의 인증서가 신뢰할 수 있는지 확인을 하�
 4) 예외처리
 네트워크 오류나 잘못된 요청 등이 발생 가능한 상황에서 예외처리를 할 수 있다
 주요 예외로 http.cilent.HTTPException 
+
+4. Django 내장 웹 클라이언트
+Django.test.cliebt 클래스를 사용하여 Django 어플리케이션 내에서 테스트 및 시물레이션 목적으로 HTTP 요청을 만들 수 있다
+주로 테스트 프레임워크에서 사용되지만 일반적인 웹 클라이언트로서도 활용할 수 있다
+
+1) HTTP 요청 보내기
+get(), post(), put(), patch(), delete() 등의 메서드를 사용하여 HTTP 요청을 보낼 수 있다
+필요한 경우 URL, 데이터, 헤더 등을 지정할 수 있다
+
+2) 응답처리
+해당하는 HTTP 응답 객체를 반환한다
+
+3) 세션 유지
+한번 연결된 세션을 유지하고 여러 요청에 대해 동일한 세션 상태를 유지할 수 있다 
+
+4) 폼 처리
+post() 메소드를 사용하여 데이터를 제출할 수 있다 이는 실제 브라우저 제출과 비슷한 동작을 한다
+
+- 웹 서버 라이브러리
+
+1. HTTPSever
+http.server.HTTPSever 클래스는 기본적인 HTTP 서버를 구현하는데 사용된다
+TCP 소켓을 생성하고 요청을 수신하기 위해 지정된 IP 주소와 포트에 대기한다
+요청이 들어오면 해당 요청을 처리할 핸들로 객체(BaseHTTPRequestHAndler의 인스턴스)를 생성하여 처리한다
+
+2. BaseHTTPRequestHAndler
+http.server.BaseHTTPRequestHAndler클래스는 HTTP 요청을 처리하는 핵심 로직을 구현하는 추상클래스다
+실제로 사용하기 위해서는 해당 클래스를 상속 받아서 사용자 정의 핸들러 클래스를 작성해야 한다
+
+3) 주요 메서드
+do_GET() : GET 요청에 대한 처리 로직을 구현한다
+do_POST(): POST 요청에 대한 처리 로직을 구현한다
+send_response(): 응답 상태 코드와 헤더 정보를 전송한다
+end_headers() : 응답 헤더의 끝임을 알리는 빈 줄(CRLF)를 전송한다
+
+4. simpleHTTPRequestHandler
+정적 파일을 제공하기 위한 간단한 HTTP 요청 처리기다 (개발 및 테스트용)
+simpleHTTPRequestHandler는 BaseHTTPRequestHAndler를 상속하며,
+메서드들을 상속받아 정적 파일 서비스를 처리하는 추가 로직을 구현한다
+
+1) 정적 파일 서비스
+현재 작업 디렉토리에서 정적 파일(HTML, CSS, javaScript, 이미지 등) 을 제공한다
+GET 요청에 대해 요청된 파일이 존재하는 경우 해당 파일을 응답으로 보낸다
+
+2) Content-Type 자동설정
+요청된 파일의 확장자를 기반으로 Content-Type의 헤더 값을 자동으로 설정한다.
+예시) .html 파일-> /text/html, jpg -> image/jpg
+
+3) Range 지원
+Range 요청 해더가 있는 경우 해당 범위만큼의 데이터만 응답으로 보낼 수 있다
+예시) 다운로드 중 일부만 필요한 경우 -> 대용량 파일 전송, 스트리밍과 같은 상황에ㅔ서 유용하다
+
+5. CGIHTTPRequestHandler ( Common Geteway Interface)
+CGI는 웹 서버와 외부 프로그램 간의 표준 인터페이스를 제공하여 동적인 웹 콘텐츠를 생성하는데 사용되고,
+CGIHTTPRequestHandler는 CGI 프로그램을 실행하고 처리하기 위해 사용된다
+CGIHTTPRequestHandler는 BaseHTTPRequestHAndler를 상속하며, CGI 스크립트를 실행하기 위한 추가 로직을 작성한다
+
+1) CGI 스크립트 실행
+CGIHTTPRequestHandler는 클라이언트가 요청한 CGI 스크립트를 실행한다
+GET, POST  요청에 대한 환경 변수와 데이터 (payload)를 설정하여 스크립트를 호출한다
+스크립트의 실행 결과가 HTTP 응답으로 반환된다
+
+2) 환경 변수 
+요청 메소드, URL 경로, 쿼리 문자열 등과 같은 정보가 환경 변수로 설정되어 CGI 스크립트에서 참조할 수 있다
+이러한 환경 변수들은 on.environ 딕셔너리에 저장되어 전달된다
+
+3) 보안 검사
+기본적으로 CGIHTTPRequestHandler는 보안 검사를 수행하여 악성 코드나 디렉토리 트래버셜(directory traversal)  공격을 방지한다
+경로 검사, 접근 제어 등의 보안 기능도 내장되어 있다 
+500 Internal Error  오류 발생 시 내장된 오류 페이지를 출력한다 
