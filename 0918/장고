@@ -512,12 +512,12 @@ C:\Users\wogur\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\
 django-grappelli : 관리자 사이트에 Bootstrap 테마 적용 
 django-suit : 외관, 사용자 개선
 django-jet: jQuery, Bootstrap 적용
-django-import-export : Excel, CSV 등의 파일 형식으로 데이터를 가져오고 내보내기 용이하게
+django--export : Excel, CSV 등의 파일 형식으로 데이터를 가져오고 내보내기 용이하게
 
 파이썬 shell 
 모델 import : 모델 클래스를 사용하기위해 모델들을 import  해야한다
 데이터 생성 : Create() 메서드나 객체 인스턴스 생성 후 save() 메서드 등으로 데이터베이스 변경사항 저장
-데이터 삭제 : 조회한 객체에 .delete() 메서드로 삭제
+데이터 삭제 : 조회한 객체에 .deletimporte() 메서드로 삭제
 
 단일 객체 검색 : .get() 메서드 사용
 조건 검색 : .filter() 메서드 사용
@@ -532,3 +532,10 @@ from django.utils import timezone
 q = Question(question_text="비콘은 찍었니?", pub_date=timezone.now())
 q.save()
 Question.objects.all()
+
+Form 처리 
+Form 클래스 : HTml form 요소를 python 코드로 생성하는 것 Form 클래스에서는 필드와 그에 대한 유효성 검사를 포함한다
+유효성 검사(Validation) : is_vaild() 메서드를 통해 제출된 데이터의 유효성을 검사한다
+데이터가 유효하다면 True가 나오고, 유효하지 않으면 False가 나오는데 해당 필드와 관련된 에러는 form.error에서 확인할 수 있다
+모델 폼(Model Form) : ModelForm 클래스는 모델과 연관된 폼을 생성할 수 있다 모델 필드 기반으로 자동으로 폼 필드를 생성한다
+폼 커스터마이징: Form 및 ModelForm 클래스를 상속에서 커스텀 폼을 만든다
