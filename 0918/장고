@@ -539,3 +539,215 @@ Form 클래스 : HTml form 요소를 python 코드로 생성하는 것 Form 클�
 데이터가 유효하다면 True가 나오고, 유효하지 않으면 False가 나오는데 해당 필드와 관련된 에러는 form.error에서 확인할 수 있다
 모델 폼(Model Form) : ModelForm 클래스는 모델과 연관된 폼을 생성할 수 있다 모델 필드 기반으로 자동으로 폼 필드를 생성한다
 폼 커스터마이징: Form 및 ModelForm 클래스를 상속에서 커스텀 폼을 만든다
+
+form 처리
+
+form django import forms
+
+class contactForm(forms.Form):
+    name = forms.CharFiedld(max_length=20)
+    email = forms.EmaeilField()
+    message = forms.CharField(Widget=forms. Textarea)
+    
+위 ContactForm에는 3개의 필드 (name, email, message)로 구성되어 있다
+각각 문자열(CharField), 이메일(EmailField), 텍스트 위젯(Textarea 적용된 CharField)
+
+모델 폼
+
+class NewModelForm(forms.NewModel):
+    class Meta:
+        model = NewModelForm
+        fields = ['field1','field2']
+
+기존에 만들어진 NewModel 모델에 기반한 ModelForm이다
+Meta 내부 클래스에서 사용할 모데레과 해당 몰델 필드를 폼 필드로 사용할지 결장한다
+
+#views.py
+form djamgp.shortcuts import render # render 함수 사용하기 위해서
+from .forms import ContactForm # ContactForm 폼 클래스 
+
+def contact_view(request):
+    if request.method == 'POST': # 요청 메소드가 POST인지 확인 
+        form = ContactForm(request.POST) # 요청 데이터로부터 폼 객체를 생성 
+        if form.is_vaild(): # 데이터 형식이 유효한지 
+            name = form.cleaned_data.get('name') 
+            email = form.cleaned_data.get('email')
+            message = form.cleaned_data.get('message') # 유효성 검사를 통과한 데이터에 필요한 값을 가져온다 
+
+            # 이메일 보내기 로직 
+
+            return redirect('results') # 다른 페이지로 리다이렉트
+
+    else :
+        form = ContactForm() # GET 요청일 떄, 빈 폼 객체를 생성한다 
+
+    return render(request, 'contact.html', {})
+
+# contact.html
+<form method="post">
+    {% csrf_token %}
+    {{form.non_field_errors}}  # 폼에 대한 일반적인 오류 메시지 출력 
+    <div class = "fieldWrapper"> # 
+        {{form.name.errors}} # 이름에 대한 오류 메시지 출력
+        <label for="{{form.name.id_for_label}}">이름 : </label>
+        {{form.name}} # 실제 입력 필드를 생성하여 폼과 연결한다
+    </div>
+    <div class = "fieldWrapper">
+        {{form.email.errors}} # 이메일에 대한 오류 메시지 출력
+        <label for="{{form.email.id_for_label}}">이메일 : </label>
+        {{form.email}} #실제 입력 필드를 생성하여 폼과 연결한다
+    </div>
+    <div class = "fieldWrapper">
+        {{form.message.errors}} # 메세지에 대한 오류 메시지 출력
+        <label for="{{form.message.id_for_label}}">메시지 : </label>
+        {{form.message}} # 실제 입력 필드를 생성하여 폼과 연결한다
+    </div>
+    <input type="submit" value="보내기">
+</form>
+
+
+#클래스형 뷰 (class-Based Views, CBVs)
+장고 뷰에서는 HTTP 요청을 받아 처리하고, HTTP 응답을 반환한다
+함수형 기반뷰(Function-Based Views, FBVs) , 클래스형 뷰 (class-Based Views, CBVs) 
+
+함수형 뷰
+form django.shortcuts import render
+form django.http import HttpResponse
+
+def hello(request):
+    return HttpResponse("안녕하세요.")
+
+클래스형 뷰
+from django.http import HttpResponse
+from django.views import View
+
+class HelloView(View):
+    def get(self, request):
+        return HttpResponse("안녕하세요")
+
+View 클래스 : 장ㅇ고의 가장 기본적인 CBV, 이 클래스는 HTTP 메서드에 따라 호출되는 메서드를 정의할 수 있다
+URL 패턴에 뷰를 연결하려면 as_view() 메서드를 사용해야 한다
+
+# urls.py 
+from django.urls  import path 
+from .views impoer HelloView
+
+urlpatterns = [
+    path('hello/', HelloView.as_view()),
+
+]
+
+TemplateView : 템플릿을 랜더링하고 그 결과를 HTTP 응답으로 반환한다
+from django.views.generic import TemplateView
+
+class HomeView(TemplateView):
+    temp = "home.html"
+
+ListView, DetailView : 객체 목록, 단일 객체 상세 정보 보여준다
+from django.views.generic impoert ListView, DetailView 
+form .models import NewModel
+
+class NewModelListView(ListView):
+    model = NewModel
+
+class NewModelDetailView(ListView):
+    model = NewModel
+
+메서드 오버라이딩 
+from djamgp.views.generic import TemplateView 
+
+class HomeView(TemplateView):
+    temp = "home.html"
+
+    def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['hello'] = '안녕하세요'
+    return context
+
+Mixin : 여러 부에서 공통적으로 사용되는 동작을 Mixin으로 정의해서 코드를 줄인다
+from django.http import HttpResponse
+from django.views import import View
+
+class MyMixin:
+ def dispatch(self, request, *arg, **kwargs):
+    print("Request Process")
+    return super().dispatch(request, *arg, **kwargs)
+
+class HElloVIew(MyMixin, View):
+    def get(self, request):
+        return HttpResponse("안녕하세요")
+
+# HelloView에서 모든 요청에 대해 Request Process라는 메세지를 호출한다
+# 주의할 점 : Mixin은 독립적으로 동작할 수 없다 python MRo(Method Resolution Order)에 따라 상속 순서가 중요하다
+# 실제 부 클래스는 최하위에 존재해야 한다 
+
+폼 처리 
+
+FormView 
+폼 제출을 처리하는 뷰, from_class 속성을 사용하여 폼 클래스를 지정하고, success_url 속성에 폼 제출 성공시 리다이렉트할 URL을 
+from_valid() 메서드를 오버라이드하여 추가 로직을 구현할 수 있다
+
+from django.urls import revere_lazy
+from django.views.generic.edit import FormVuew
+from myapp.forms import ContactForm
+
+class ContactView(FormView):
+    temp = 'contact.html'
+    form_class = ContactForm
+    success_url = reverse_lazy('success')
+
+    def form_valid(self, form):
+    # 유효성 검사 완료된 후 작업 (cleaned_data, ...)
+    return super().form_valid(form)
+
+reverse : 주어진 뷰에 대한 URL 생성
+
+reverse_lazy : reverse와 똑같은데 더 느리다 명시적 엑세스(explicitly accessed) 될 때까지 URL 생성하지 않는다 
+보통 succress_url같은 클래스 기반 뷰에서 사용한다 
+
+CreateView, UpdateView 
+from django.urls import reverse_lazy
+from django.views.generic.edit impoer CreateView, UpdateView
+from myapp.models impoer NewModel
+
+class NewModelCreate(CreatView) : 
+    model = NewModel
+    fileds = ['field1', 'field2']
+    success_url = reverse_lazy('success')
+
+
+class NewModelUpdate(UpdateView):
+    model = NewModel
+    fileds = ['field1', 'field2']
+    success_url = reverse_lazy('success')
+
+# 추가적인 로직이 필요하다면 메서드 오버라이드하여 사용할 수 있다 (get_context_data, form_valid 등 )
+
+제네릭 뷰 : 공통적으로 사용할 수 있는 기능들을 추상화하여 제공해주는 클래스형 뷰 
+from django.views.generic 패키지에 있다 
+
+Base View : View, TemplateView, RedirectView 
+Generic Display View : ListView, DetailView 
+Generic Edit View : FormView, CreateView, UpdateView, DeleteView
+Generic Date View 
+1.  ArchiveIndexView(날짜 기반 최상위 뷰) :  data_field 속성에 날짜 필드를 기준으로 내림차순으로 보여준다
+2. YEarArchiveView : 추출된 연도 인자를 기준으로 월을 보여준다
+3. MonthArchiveView : 추출된 연, 월에 해당하는 객체들을 보여준다
+4. WeekArchiveView : 추출된 연, Week에 해당하는 객체들을 보여준다
+5. DayArchiveView : 추출된 연, 월 ,일에 해당하는 객체들을 보여준다 
+6 . TodayArchiveView : 오늘 날짜에 해당하는 객체를 보여준다
+7. DateDetailView : 연, 월 , 일 또는 pk 에 해당하는 객체 하나를 보여준다
+
+커스터마이징 
+from django.http import HttpResponse
+from django.views import View
+
+class CustomView(View):
+    def get(self, request):
+        retunrn HttpREwponse("CustomView")
+
+CBV vs FBV
+FBV 장점 : 간단한 로직이나 작은 프로젝트에 적합하다 HTTP 메서드별로 처리가 필요한 경우 if문만 가지고도 충분히 처리가능하다 
+CBV 장점 : 복잡한 웹 어플리케이션에서는 클래스와 오버라이딩을 통해 체계적인 개발을 할 수 있다 유지보수성, 재사용성, Mixin ..
+제네륵 클래스 뷰를 활용하면, CRUD 작업 같은 로직을 쉽게 구현할 수 있다
+단, 메서드를 오버라이딩하여 사용할 때, 항상 해당 메서드를 super() 함수로 호출해야한다 
