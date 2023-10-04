@@ -1,0 +1,149 @@
+- 서블릿 정보등록
+
+1) web.xml을 사용한 서블릿 등록
+web.xml 파일에 <servlet> 태그와 <servlet-mapping> 태그를 사용하여 서블릿 클래스와 URL 패턴을 
+
+<web -app>
+    <servlet>
+        <servlet-name>myServlet</servlet-name>
+        <servlet-class>com.example.myServlet</service-class>
+    </servlet>
+
+    <servler-mapping>
+        <servlet-name>myServlet</servlet-name>
+        <url-pattern>/servlet</url-pattern>
+    </servlet-mapping>
+</web-app>
+
+Myservlet 클래스를 /servlet URL에 패턴에 매핑하였다
+
+2) 어노테이션을 사용한 서블릿 등록
+Java Servlet 3.0부터 어노테이션 기반으로 서블릿 정보등록이 가능해졌다
+
+@WebServlet("/servlet")
+
+-페이지 이동
+
+리다이렉트(Redirecct)
+리다이렉트는 클라이언트에게 특정 URL로 재요청하도록 지시하는 방식
+서버는 클라이언트 요청을 받아 처리한 후 상태 코드 302 or 301 등으로 설정하고, Location 헤더에
+새로운 URL을 담아 응답한다 이후 클라이언트는 이 응답을 받고 새 URL로 재요청을 보낸다
+
+resoinse.sendRedirect("/nowUrl");
+
+두 번의 요청/응답을 거친다
+원래 요청 정보가 유지되지 않는다
+주소창 URL이 변경된다
+GET 메소드만 사용할 수 있다
+
+
+포워드(Forward)
+포워드는 서버 내부에서 페이지 이동을 처리하는 방식
+서버가 클라이언트의 요청을 받고, 해당 요청과 응답 객체를 다른 서블릿, JSP 등에 전달(forward)한다
+해당 서블릿, JSP 등을 이어받아 처리 결과를 생성하여 클라이언트에게 응답한다
+
+RequestDispatcher dispatcher = request.getRequestDispatcher("newUrl");
+dispatcher.forward(request, response);
+
+한 번의 요청/응답을 거친다
+원래 요청 정보가 유지된다
+주소창 URL이 변경되지 않는다 
+
+- 정보 공유
+정보 공유는 주로 세 가지 범위에서 이루어진다 요청(request), 세션(session), 어플리케이션(application)
+
+1) 요청 범위(request Scope)
+요청 범위는 한 번의 HTTP 요청을 처리하는 동안 유지되는 정보 
+
+request.setAttribute("myAttribute", "Hello");
+String myAttribute = (String) request.getAttribute("myAttribute);
+
+2) 세션 범위 (Session Scope)
+세션 범위는 클라이언트가 웹 사이트에 접속한 후부터 브라우저를 닫거나 로그아웃하기 전까지 유지되는 
+
+HttpSession session = request.getSession();
+session.setAttribute("user", user);
+User user = (User) session.getAttribute("user")
+
+3) 어플리케이션 범위(Application Scope)
+어플리케이션이 시작되고 종료되기 전까지 유지되며 모든 사용자가 공유하는 정보
+
+ServletContext application = getServletContext();
+application.serAttribute("appData", data);
+Objext data = application.getAttribute("appData");
+
+요청 범위 : 한 번의 HTTP 요청/응답 사이클 동안만 필요한 임시 데이터를 저장
+세션 범위 : 한 클라이언트의 여러 요청에 유지되어야 하는 데이터를 저장
+어플리케이션 범위: 어플리케이션 전체에서 공유되어야 하는 데이터를 저장
+
+1. 학생 정보 등록
+2, 성적 조회
+3. 전체 성적 분석
+
+작업 -> doGet(), doPost()
+초기화 -> init(): 서블릿 요청시 최초 1번
+종료 -> destroy() : 서블릿이 요청을 수행한 뒤 메모리에서 소멸될 때 
+
+-JSP (Java Server Pages)
+HTML 코드에 Java 코드를 삽입하여 동적인 웹 페이지를 생성하는 기술
+JSP는 자바 서블릿 기반으로 클라이언트의 요청에 따라 HTML, XML 등의 웹 문서를 생성한다
+
+동적 웹 컨텐츠 생성: JSP는 사용자의 요청에 따라 실시간으로 변하는 웹 페이지를 만드는데 사용된다
+프레젠테이션 로직 구현 : 비즈니스 로직과 프레젠테이션 로직
+JSP 페이지에서 HTML 태그와 Java 코드를 함께 작성하여 로직을 쉽게 구현할  수 있다
+HTML은 정적인 웹 페이지만 개발 가능하지만, JSP에서 Java를 사용하여 모든 기능을 활용할 수 있다
+MVC (Model-View-controller) 패턴 : JSP는 주로 View 역할 
+세션 관리 : JSP는 HTTP 세션을 관리하는 기능을 제공한다
+
+
+JSP, 서블릿 차이점
+코드
+서블릿은 순수한 자바 코드로 구성, HTML 태그는 문자열 형태로 출력
+JSP는 HTML 안에 자바 코드를 추가하여 웹 페이지 생성 가능
+
+로직 
+서블릿은 비즈신스 로직을 처리하는데 주로 사용한다
+JSP은 프레젠테이션 로직, 클라이언트에게 보여지는 View에 초점을 맞추어 사용된다
+
+변환 및 실행
+서블릿은 클라이언트의 요청마다 해당 메소드(doGet(), doPost()등 )이 호출된다 
+JSP는 처음 요청 시 내부적으로 서블릿으로 변환 후에 컴파일되어 실행된다 
+동일한 요청이 들어올 시 이미 컴파일된 서블릿 코드가 실행된다
+
+JSP 작동 방식
+클라이언트가 JSP 페이지를 요청하면 웹 컨테이너(Tomcat)는 해당 JSP 파일을 서블릿 클래스로 변환하고 컴파일한다
+컴파일된 서블릿은 클라이언트의 요청 처리 후 응답을 반환한다
+
+클라이언트 요청 -> JSP 파일 확인 서블릿 변환 및 컴파일  -> 서블릿 실행 -> 응답 생성 및 반환 
+-> 재요청 처리 
+
+JSP 지시어(Directives)
+page 지시어 : 페이지 전체에 적용되는 속성(import, error page, 세션 사용 여부, 버퍼 크기 등)
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="UTF-8" %>
+
+include 지시어 : 다른 파일을 현재 JSP페이지에 포함시킨다
+<%@ include file="header.jsp" %>
+
+taglib : 태그 라이브러리를 현재 JSP 페이지에서 사용할 수 있도록 한다
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+-스크립트 요소(Scripting Elements) : JSP 페이지 내에 자바 코드를 삽입하는데 사용된다
+
+표현식(Expression) : <%= %> 사이에 위치한 코드는 자바에서의 결과 값을 반환하고,
+최종적으로  HTML에 포함된다 세미콜론을 붙이지 않는다
+<%= "Hello World" %>
+
+스크립트릿(Scriptlet) : <% %> 사이의 작성된 자바 코드는 서블릿 _jspService() 메소드에서 실행
+여기서 변수를 선언하거나 로직을 수행할 수 있다
+<% String name= "Hello'; %>
+<% for(int i=0; i<10; i++) { %>
+    <p><%= i %><p>
+<% } %>
+
+선언(Declaration) : <%! %> 사이의 자바 코드는 서블릿 클래스 멤버 변수, 메서드로 선언된다
+<%! int count = 0; %>
+
+
+
+
+
